@@ -1448,6 +1448,7 @@
 				A09499501E1D1CB600EFDE29 /* Resources */,
 				3FF22C3403C6B8870D286DEA /* [CP] Embed Pods Frameworks */,
 				A024C7C421BAA83200FEA133 /* Crashlytics */,
+				BF8262034FE094E679796605 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1509,7 +1510,6 @@
 				TargetAttributes = {
 					A09499511E1D1CB600EFDE29 = {
 						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = RE853S4FBU;
 						LastSwiftMigration = 1100;
 						ProvisioningStyle = Automatic;
 					};
@@ -1846,6 +1846,24 @@
 			shellPath = /bin/sh;
 			shellScript = "SWIFT_PACKAGE_DIR=\"${BUILD_DIR%Build/*}SourcePackages/checkouts/firebase-ios-sdk/Crashlytics\"\n";
 		};
+		BF8262034FE094E679796605 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SwiftHub/Pods-SwiftHub-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUserMessagingPlatform/UserMessagingPlatformResources.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UserMessagingPlatformResources.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SwiftHub/Pods-SwiftHub-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C762C6201E1D40D500C09EBD /* R.swift */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1856,7 +1874,7 @@
 			);
 			name = R.swift;
 			outputPaths = (
-				"$SRCROOT/SwiftHub/Resources/R.generated.swift",
+				$SRCROOT/SwiftHub/Resources/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2320,7 +2338,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 32;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = RE853S4FBU;
+				DEVELOPMENT_TEAM = YTPNCWF278;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftHub/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -2328,9 +2346,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.public.SwiftHub;
+				PRODUCT_BUNDLE_IDENTIFIER = com.public.SwiftHub.x;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -2341,7 +2362,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = RE853S4FBU;
+				DEVELOPMENT_TEAM = YTPNCWF278;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = SwiftHub/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -2349,9 +2370,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.public.SwiftHub;
+				PRODUCT_BUNDLE_IDENTIFIER = com.public.SwiftHub.x;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

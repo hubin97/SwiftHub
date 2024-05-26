@@ -41,10 +41,21 @@ class BranchesViewController: TableViewController {
             self?.navigationTitle = title
         }).disposed(by: rx.disposeBag)
 
+        // 将数据绑定到tableView上
         output.items.asDriver(onErrorJustReturn: [])
-            .drive(tableView.rx.items(cellIdentifier: reuseIdentifier, cellType: BranchCell.self)) { tableView, viewModel, cell in
+            .drive(
+                // 使用RxCocoa的rx.items方法，将数据源和UITableView绑定
+                tableView.rx.items(
+                    // 指定cell的identifier和cell的类型
+                    cellIdentifier: reuseIdentifier,
+                    cellType: BranchCell.self
+                )
+            ) { tableView, viewModel, cell in
+                // 在闭包中，绑定cell和对应的ViewModel
                 cell.bind(to: viewModel)
-            }.disposed(by: rx.disposeBag)
+            }
+            // 使用disposeBag来管理RxSwift的资源释放
+            .disposed(by: rx.disposeBag)
 
         viewModel.branchSelected.subscribe(onNext: { [weak self] (branch) in
             self?.navigator.pop(sender: self)

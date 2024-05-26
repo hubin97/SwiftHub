@@ -11,9 +11,11 @@ import RAMAnimatedTabBarController
 import Localize_Swift
 import RxSwift
 
+// 枚举定义了 TabBar 中的各个选项
 enum HomeTabBarItem: Int {
     case search, news, notifications, settings, login
 
+    // 根据枚举值返回对应的视图控制器
     private func controller(with viewModel: ViewModel, navigator: Navigator) -> UIViewController {
         switch self {
         case .search:
@@ -34,6 +36,7 @@ enum HomeTabBarItem: Int {
         }
     }
 
+    // 根据枚举值返回对应的图标
     var image: UIImage? {
         switch self {
         case .search: return R.image.icon_tabbar_search()
@@ -44,6 +47,7 @@ enum HomeTabBarItem: Int {
         }
     }
 
+    // 根据枚举值返回对应的标题
     var title: String {
         switch self {
         case .search: return R.string.localizable.homeTabBarSearchTitle.key.localized()
@@ -54,6 +58,7 @@ enum HomeTabBarItem: Int {
         }
     }
 
+    // 根据枚举值返回对应的动画
     var animation: RAMItemAnimation {
         var animation: RAMItemAnimation
         switch self {
@@ -63,11 +68,13 @@ enum HomeTabBarItem: Int {
         case .settings: animation = RAMRightRotationAnimation()
         case .login: animation = RAMBounceAnimation()
         }
+        // 设置动画的颜色属性
         animation.theme.iconSelectedColor = themeService.attribute { $0.secondary }
         animation.theme.textSelectedColor = themeService.attribute { $0.secondary }
         return animation
     }
 
+    // 创建并返回对应的视图控制器，同时配置 TabBarItem
     func getController(with viewModel: ViewModel, navigator: Navigator) -> UIViewController {
         let vc = controller(with: viewModel, navigator: navigator)
         let item = RAMAnimatedTabBarItem(title: title, image: image, tag: rawValue)
@@ -84,6 +91,7 @@ class HomeTabBarController: RAMAnimatedTabBarController, Navigatable {
     var viewModel: HomeTabBarViewModel?
     var navigator: Navigator!
 
+    // 自定义初始化方法
     init(viewModel: ViewModel?, navigator: Navigator) {
         self.viewModel = viewModel as? HomeTabBarViewModel
         self.navigator = navigator
@@ -94,27 +102,35 @@ class HomeTabBarController: RAMAnimatedTabBarController, Navigatable {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // 视图加载完成后的设置
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // 设置 UI
         makeUI()
+        // 绑定 ViewModel
         bindViewModel()
     }
 
+    // 设置界面元素和主题
     func makeUI() {
+        // 监听语言变更通知
         NotificationCenter.default
             .rx.notification(NSNotification.Name(LCLLanguageChangeNotification))
             .subscribe { [weak self] (event) in
+                // 更新每个 TabBarItem 的标题
                 self?.animatedItems.forEach({ (item) in
                     item.title = HomeTabBarItem(rawValue: item.tag)?.title
                 })
+                // 重新设置视图控制器
                 self?.setViewControllers(self?.viewControllers, animated: false)
                 self?.setSelectIndex(from: 0, to: self?.selectedIndex ?? 0)
             }.disposed(by: rx.disposeBag)
 
+        // 设置 TabBar 的颜色
         tabBar.theme.barTintColor = themeService.attribute { $0.primaryDark }
 
+        // 监听主题变更
         themeService.typeStream.delay(DispatchTimeInterval.milliseconds(200), scheduler: MainScheduler.instance)
             .subscribe(onNext: { (theme) in
                 switch theme {
@@ -124,19 +140,25 @@ class HomeTabBarController: RAMAnimatedTabBarController, Navigatable {
             }).disposed(by: rx.disposeBag)
     }
 
+    // 绑定 ViewModel
     func bindViewModel() {
         guard let viewModel = viewModel else { return }
 
+        // 创建 ViewModel 输入
         let input = HomeTabBarViewModel.Input(whatsNewTrigger: rx.viewDidAppear.mapToVoid())
+        // 调用 ViewModel 的 transform 方法，获取输出
         let output = viewModel.transform(input: input)
 
+        // 绑定输出的 tabBarItems 到视图控制器
         output.tabBarItems.delay(.milliseconds(50)).drive(onNext: { [weak self] (tabBarItems) in
             if let strongSelf = self {
+                // 创建并设置视图控制器
                 let controllers = tabBarItems.map { $0.getController(with: viewModel.viewModel(for: $0), navigator: strongSelf.navigator) }
                 strongSelf.setViewControllers(controllers, animated: false)
             }
         }).disposed(by: rx.disposeBag)
 
+        // 绑定打开 What's New 界面的输出
         output.openWhatsNew.drive(onNext: { [weak self] (block) in
             if Configs.Network.useStaging == false {
                 self?.navigator.show(segue: .whatsNew(block: block), sender: self, transition: .modal)
